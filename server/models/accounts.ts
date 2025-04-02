@@ -1,8 +1,8 @@
 import { Schema } from "mongoose";
-
 import { IAccount } from "../interfaces/account";
 
-import { cnxAccounts } from "../db/mongodb";
+// CAMBIA esta línea:
+import { cnxProducts } from "../db/mongodb"; // en vez de cnxAccounts
 
 const accountsSchema = new Schema<IAccount>(
   {
@@ -12,6 +12,7 @@ const accountsSchema = new Schema<IAccount>(
   { timestamps: true }
 );
 
-const Accounts = cnxAccounts.model<IAccount>("Accounts", accountsSchema);
+// nombre del modelo: puede ser singular o plural, pero el `from:` en el $lookup debe coincidir con la colección final
+const Account = cnxProducts.model<IAccount>("accounts", accountsSchema); // 👈 ojo aquí: usar nombre en minúsculas
 
-export default Accounts;
+export default Account;

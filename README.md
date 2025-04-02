@@ -60,7 +60,7 @@ Según criterio del desarrollador
 - [x] Iniciar servicio mongdb community
 
 ```
-brew services start mongodb-community@7.0
+brew services start mongodb-community@7. 
 ```
 
 - [x] Detener servicio mongdb community
