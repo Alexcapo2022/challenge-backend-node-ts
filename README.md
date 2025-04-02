@@ -68,3 +68,127 @@ brew services start mongodb-community@7.
 ```
 brew services stop mongodb-community@7.0
 ```
+
+
+
+
+## Mocks disponibles (para carga de datos)
+```json
+"scripts": {
+  "insert:accounts": "ts-node server/mocks/insertAllAccountsMock.ts",
+  "insert:products": "ts-node server/mocks/insertAllProductsMock.ts"
+}
+```
+
+---
+
+## Queries y Mutaciones a utilizar
+
+### Crear una cuenta
+```graphql
+mutation {
+  createAccount(input: {
+    name: "Angelo Pizarro",
+    email: "amgelo@cliente.com"
+  }) {
+    _id
+    name
+    email
+  }
+}
+```
+
+### Listar cuentas con paginación
+```graphql
+query {
+  listAccounts(page: 1, limit: 50, search: "") {
+    total
+    data {
+      _id
+      name
+      email
+    }
+  }
+}
+```
+
+### Crear productos asociados a una cuenta
+```graphql
+mutation {
+  createProducts(input: [
+    {
+      name: "Mouse Logitech",
+      sku: "LOG-MSE-003",
+      status: ACTIVE,
+      accountId: "67eda680d7b9e03b121f4197"
+    },
+    {
+      name: "Teclado HyperX",
+      sku: "HP-KB-001",
+      status: OUT_OF_STOCK,
+      accountId: "67eda680d7b9e03b121f4197"
+    }
+  ]) {
+    _id
+    name
+    sku
+    status
+  }
+}
+```
+
+### Listar productos con datos de cuenta asociada
+```graphql
+query {
+  listProducts(page: 1, limit: 20, search: "") {
+    total
+    totalPages
+    currentPage
+    hasNextPage
+    hasPreviousPage
+    data {
+      _id
+      name
+      sku
+      status
+      account {
+        _id
+        name
+        email
+      }
+    }
+  }
+}
+```
+
+---
+
+## Mock de cuenta
+```ts
+// src/mocks/accountMock.ts
+export const accountMock = {
+  name: "Cliente Demo",
+  email: "demo@cliente.com"
+};
+```
+
+## Mock de productos
+```ts
+// src/mocks/productsMock.ts
+export const productsMock = [
+  {
+    name: "Laptop Lenovo i5",
+    sku: "LEN-LAP-004",
+    status: "ACTIVE",
+    accountId: "67ed477425ba1bb3c933821e"
+  },
+  {
+    name: "Monitor LG",
+    sku: "LG-MON-001",
+    status: "ACTIVE",
+    accountId: "67eccb0431575c3078eae9a8"
+  }
+];
+```
+
+---
